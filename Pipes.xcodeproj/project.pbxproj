@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3D5EFD212079FBE500D05C87 /* GameNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5EFD202079FBE500D05C87 /* GameNode.swift */; };
+		3D5EFD232079FFF800D05C87 /* Item+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D5EFD222079FFF800D05C87 /* Item+Extensions.swift */; };
 		3D861B03201EC82300C700AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D861B02201EC82300C700AB /* AppDelegate.swift */; };
 		3D861B09201EC82300C700AB /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D861B08201EC82300C700AB /* GameScene.swift */; };
 		3D861B0B201EC82300C700AB /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3D861B0A201EC82300C700AB /* GameViewController.swift */; };
@@ -27,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3D5EFD202079FBE500D05C87 /* GameNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameNode.swift; sourceTree = "<group>"; };
+		3D5EFD222079FFF800D05C87 /* Item+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Item+Extensions.swift"; sourceTree = "<group>"; };
 		3D861AFF201EC82300C700AB /* Pipes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pipes.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3D861B02201EC82300C700AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3D861B08201EC82300C700AB /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
@@ -113,6 +117,8 @@
 			isa = PBXGroup;
 			children = (
 				3DD276B3205FD2A700DFA861 /* PipesCore */,
+				3D5EFD202079FBE500D05C87 /* GameNode.swift */,
+				3D5EFD222079FFF800D05C87 /* Item+Extensions.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -198,9 +204,11 @@
 				3D861B0B201EC82300C700AB /* GameViewController.swift in Sources */,
 				3DD276C4205FD2A700DFA861 /* Mine.swift in Sources */,
 				3DD276C1205FD2A700DFA861 /* Pipe.swift in Sources */,
+				3D5EFD232079FFF800D05C87 /* Item+Extensions.swift in Sources */,
 				3DD276C2205FD2A700DFA861 /* Point.swift in Sources */,
 				3DD276C3205FD2A700DFA861 /* Yard.swift in Sources */,
 				3D861B03201EC82300C700AB /* AppDelegate.swift in Sources */,
+				3D5EFD212079FBE500D05C87 /* GameNode.swift in Sources */,
 				3DD276BF205FD2A700DFA861 /* Building.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

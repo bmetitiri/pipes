@@ -1,4 +1,4 @@
-public enum Item {
+public enum Item: String {
   case none
   case copper_ore, iron_ore, stone
   case copper, iron

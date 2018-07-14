@@ -1,6 +1,14 @@
-public struct Node {
+class Node {
+  var column: Int
+  var row: Int
   weak var value: Building?
   var ore: Item
+
+  required init(column: Int, row: Int) {
+    self.column = column
+    self.row = row
+    self.ore = .none
+  }
 
   public func type() -> Item {
     guard let value = value else { return ore }

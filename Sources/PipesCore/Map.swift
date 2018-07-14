@@ -1,47 +1,50 @@
 import Foundation
 
-public class Map {
-  public let width: Int
-  public let height: Int
+class Map<T: Node> {
+  let width: Int
+  let height: Int
   // TODO: Probably should not be public.
-  public var inventory = Dictionary<Item, Int>()
-  var map: [[Node]]
+  var inventory = Dictionary<Item, Int>()
+  var map: [[T]]
   var nodes = Set<Building>()
   // TODO: Change to weak referenced.
   var active = Set<Building>()
   var turn = 0
 
-  public init(width: Int, height: Int) {
+  init(width: Int, height: Int) {
     let seed = Int(arc4random())
     self.width = width
     self.height = height
-    map = Array(repeating: Array(repeating: Node(value: nil, ore: .none),
-                                 count: height + 1),
-                count: width + 1)
-    for col in 0 ... width {
-      for row in 0 ... height {
+    map = []
+    for col in 0 ..< width {
+      var colArray: [T] = []
+      for row in 0 ..< height {
+        let node = T(column: col, row: row)
         if col == 0 || col == width || row == 0 || row == height {
-          set(x: col, y: row, value: Wall())
+          node.value = Wall()
+          nodes.insert(node.value!)
         } else {
           if cos(Double(col + seed) / 8) + sin(Double(row + seed) / 4) > 1.8 {
-            map[col][row].ore = .iron_ore
+            node.ore = .iron_ore
           }
           if sin(Double(col - seed) / 8) + cos(Double(row - seed) / 4) > 1.8 {
-            map[col][row].ore = .stone
+            node.ore = .stone
           }
           if sin(Double(col + seed) / 8) + cos(Double(row + seed) / 4) > 1.8 {
-            map[col][row].ore = .copper_ore
+            node.ore = .copper_ore
           }
         }
+        colArray.append(node)
       }
+      map.append(colArray)
     }
   }
 
-  public func get(at: Point) -> Node {
+  func get(at: Point) -> Node {
     return get(x: at.x, y: at.y)
   }
 
-  public func check(type: Item, at: Point) -> Bool {
+  func check(type: Item, at: Point) -> Bool {
     if inventory[type, default: 0] <= 0 {
       return false
     }
@@ -61,7 +64,7 @@ public class Map {
     return type == .mine ? ores(type: type, at: at).count > 0 : true
   }
 
-  public func build(type: Item, at: Point) {
+  func build(type: Item, at: Point) {
     guard let build = type.build() else { return }
     if !check(type: type, at: at) {
       return
@@ -71,8 +74,8 @@ public class Map {
     switch build {
     case is Mine.Type:
       receiver = Mine(raw: ores(type: type, at: at))
-    case is Yard.Type:
-      receiver = Yard(map: self)
+//    case is Yard.Type:
+//      receiver = Yard(map: self)
     case is Factory.Type:
       receiver = Factory()
     case is Furnace.Type:
@@ -89,7 +92,7 @@ public class Map {
     active.insert(receiver)
   }
 
-  public func pipe(from: Point, to: Point) {
+  func pipe(from: Point, to: Point) {
     var dest = get(at: to).value
     if dest == nil {
       dest = Pipe()
@@ -109,7 +112,7 @@ public class Map {
     }
   }
 
-  public func delete(at: Point) {
+  func delete(at: Point) {
     let value = get(at: at).value
     if let value = value {
       switch value {
@@ -124,7 +127,7 @@ public class Map {
     set(at: at, value: nil)
   }
 
-  public func update() {
+  func update() {
     for receiver in active {
       receiver.update(turn: turn)
     }
@@ -145,7 +148,7 @@ public class Map {
     return ores
   }
 
-  private func get(x: Int, y: Int) -> Node {
+  private func get(x: Int, y: Int) -> T {
     return map[x][y]
   }
 

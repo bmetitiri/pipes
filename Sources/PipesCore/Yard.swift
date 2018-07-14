@@ -3,10 +3,10 @@ class Yard: Building {
   override class func size() -> (width: Int, height: Int) {
     return (4, 3)
   }
+/*
+  var map: Map<Node>
 
-  var map: Map
-
-  init(map: Map) {
+  init(map: Map<Node>) {
     self.map = map
     super.init(type: .yard)
   }
@@ -17,5 +17,5 @@ class Yard: Building {
       return true
     }
     return super.receive(item: item)
-  }
+  }*/
 }

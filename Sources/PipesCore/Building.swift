@@ -1,4 +1,4 @@
-class Building: Hashable {
+public class Building: Hashable {
   weak var destination: Building?
 
   var last = 0
@@ -14,7 +14,7 @@ class Building: Hashable {
     self.type = type
   }
 
-  lazy var hashValue: Int = ObjectIdentifier(self).hashValue
+  lazy public var hashValue: Int = ObjectIdentifier(self).hashValue
 
   func pipe(to: Building) {
     destination = to
@@ -41,7 +41,7 @@ class Building: Hashable {
     }
   }
 
-  static func == (lhs: Building, rhs: Building) -> Bool {
+  public static func == (lhs: Building, rhs: Building) -> Bool {
     return lhs === rhs
   }
 }

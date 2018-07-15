@@ -12,6 +12,7 @@ import GameplayKit
 class GameViewController: UIViewController {
 
   var scene: GameScene!
+  var map: Map<GameNode>!
 
   override var prefersStatusBarHidden: Bool {
     return true
@@ -33,6 +34,15 @@ class GameViewController: UIViewController {
     scene = GameScene(size: skView.bounds.size)
     scene.scaleMode = .aspectFill
     skView.presentScene(scene)
+
+    beginGame()
+  }
+
+  func beginGame() {
+    map = Map<GameNode>(width: 20, height: 30)
+    scene.map = map
+    map.update()
+    scene.addSprites(for: map.map.flatMap( { return $0 } ))
   }
 
 }

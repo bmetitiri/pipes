@@ -20,9 +20,10 @@ class Map<T: Node> {
       var colArray: [T] = []
       for row in 0 ..< height {
         let node = T(column: col, row: row)
-        if col == 0 || col == width || row == 0 || row == height {
-          node.value = Wall()
-          nodes.insert(node.value!)
+        if col == 0 || col == width - 1 || row == 0 || row == height - 1 {
+          let value = Wall()
+          nodes.insert(value)
+          node.value = value
         } else {
           if cos(Double(col + seed) / 8) + sin(Double(row + seed) / 4) > 1.8 {
             node.ore = .iron_ore

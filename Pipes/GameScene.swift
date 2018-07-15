@@ -12,7 +12,8 @@ class GameScene: SKScene {
   // MARK:  Game stuff
   var map: Map<GameNode>! {
     didSet {
-      updateSize()
+      addSprites(for: map.map.flatMap { return $0 })
+      updateCameraConstraints()
     }
   }
 
@@ -47,6 +48,9 @@ class GameScene: SKScene {
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panRecognized))
     panGesture.maximumNumberOfTouches = 1
     view?.addGestureRecognizer(panGesture)
+
+    let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchRecognized))
+    view?.addGestureRecognizer(pinchGesture)
   }
 
   func addSprites(for nodes: [GameNode]) {
@@ -65,9 +69,17 @@ class GameScene: SKScene {
       y: CGFloat(row) * tileHeight + tileHeight / 2)
   }
 
-  private func updateSize() {
-    size = CGSize(width: tileWidth * CGFloat(map.width),
-                  height: tileHeight * CGFloat(map.height))
+  private func updateCameraConstraints() {
+    guard let camera = camera else { return }
+    let mapRect = nodeLayer.calculateAccumulatedFrame()
+    let scaledSize = CGSize(width: size.width * camera.xScale, height: size.height * camera.yScale)
+    let xInset = min((scaledSize.width / 2) - 100, mapRect.width / 2)
+    let yInset = min((scaledSize.height / 2) - 100, mapRect.height / 2)
+    let insetRect = mapRect.insetBy(dx: xInset, dy: yInset)
+    let xRange = SKRange(lowerLimit: insetRect.minX, upperLimit: insetRect.maxX)
+    let yRange = SKRange(lowerLimit: insetRect.minY, upperLimit: insetRect.maxY)
+    let cameraEdgeConstraint = SKConstraint.positionX(xRange, y: yRange)
+    camera.constraints = [cameraEdgeConstraint]
   }
 
 }
@@ -81,6 +93,15 @@ extension GameScene {
     sender.setTranslation(CGPoint.zero, in: view)
     guard let position = camera?.position else { return }
     camera?.position = CGPoint(x: position.x - translation.x, y: position.y + translation.y)
+  }
+
+  @objc func pinchRecognized(_ sender: UIPinchGestureRecognizer) {
+    guard let camera = camera else { return }
+    var newScale = camera.xScale / sender.scale
+    newScale = max(min(newScale, 2.5), 0.5)
+    camera.xScale = newScale
+    camera.yScale = newScale
+    updateCameraConstraints()
   }
 
 }

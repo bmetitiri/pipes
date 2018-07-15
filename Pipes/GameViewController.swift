@@ -42,7 +42,6 @@ class GameViewController: UIViewController {
     map = Map<GameNode>(width: 20, height: 30)
     scene.map = map
     map.update()
-    scene.addSprites(for: map.map.flatMap( { return $0 } ))
   }
 
 }

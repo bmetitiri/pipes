@@ -24,8 +24,10 @@ class GameScene: SKScene {
   let gameLayer = SKNode()
   let nodeLayer = SKNode()
 
-  // MARK: Gesture variables
-  private var lastPosition: CGPoint = CGPoint.zero
+  // MARK: Gesture stuff
+  var startPinchScale: CGFloat = 1.0
+
+  // MARK: - Initialization functions
 
   override func didMove(to view: SKView) {
     addChild(gameLayer)
@@ -97,7 +99,12 @@ extension GameScene {
 
   @objc func pinchRecognized(_ sender: UIPinchGestureRecognizer) {
     guard let camera = camera else { return }
-    var newScale = camera.xScale / sender.scale
+    if sender.state == .began {
+      startPinchScale = camera.xScale
+    } else if sender.state != .changed {
+      return
+    }
+    var newScale = startPinchScale / sender.scale
     newScale = max(min(newScale, 2.5), 0.5)
     camera.xScale = newScale
     camera.yScale = newScale

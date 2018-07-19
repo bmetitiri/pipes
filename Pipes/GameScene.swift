@@ -54,8 +54,9 @@ class GameScene: SKScene {
   }
 
   func addSprites(for nodes: [GameNode]) {
-    for node in nodes where node.value != nil {
-      let sprite = SKSpriteNode(imageNamed: node.value!.type.spriteName)
+    for node in nodes where node.value != nil || node.ore != .none {
+      let spriteName = (node.value?.type ?? node.ore).spriteName
+      let sprite = SKSpriteNode(imageNamed: spriteName)
       sprite.size = CGSize(width: tileSize, height: tileSize)
       sprite.position = spritePositionFor(column: node.column, row: node.row)
       nodeLayer.addChild(sprite)

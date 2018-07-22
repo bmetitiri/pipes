@@ -1,7 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A278a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,13 +13,79 @@
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx" customClass="SKView">
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="Pipes" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="3se-qz-xqx">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FVp-4V-iLV" customClass="SKView">
+                                <rect key="frame" x="0.0" y="20" width="375" height="613"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gnr-Mz-B5h">
+                                <rect key="frame" x="0.0" y="633" width="375" height="34"/>
+                                <subviews>
+                                    <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Jht-zJ-qHS">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="34"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="O47-JQ-qWV" customClass="ItemButton" customModule="Pipes" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="0.0" width="75" height="34"/>
+                                                <connections>
+                                                    <action selector="quickSlotPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="twT-oG-j6O"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="183-cX-1R1" customClass="ItemButton" customModule="Pipes" customModuleProvider="target">
+                                                <rect key="frame" x="75" y="0.0" width="75" height="34"/>
+                                                <connections>
+                                                    <action selector="quickSlotPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="unF-op-Hmt"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nD4-uX-ndW" customClass="ItemButton" customModule="Pipes" customModuleProvider="target">
+                                                <rect key="frame" x="150" y="0.0" width="75" height="34"/>
+                                                <connections>
+                                                    <action selector="quickSlotPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="qnT-zJ-ECw"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pDt-Fp-Ls4" customClass="ItemButton" customModule="Pipes" customModuleProvider="target">
+                                                <rect key="frame" x="225" y="0.0" width="75" height="34"/>
+                                                <connections>
+                                                    <action selector="quickSlotPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="BVp-JU-O5C"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pfu-Ou-EMW" customClass="ItemButton" customModule="Pipes" customModuleProvider="target">
+                                                <rect key="frame" x="300" y="0.0" width="75" height="34"/>
+                                                <connections>
+                                                    <action selector="quickSlotPressed:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Jvt-p1-3jU"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="Jht-zJ-qHS" firstAttribute="top" secondItem="gnr-Mz-B5h" secondAttribute="top" id="Ggm-cp-0il"/>
+                                    <constraint firstItem="Jht-zJ-qHS" firstAttribute="leading" secondItem="gnr-Mz-B5h" secondAttribute="leading" id="IRH-3k-0Uq"/>
+                                    <constraint firstAttribute="trailing" secondItem="Jht-zJ-qHS" secondAttribute="trailing" id="fH3-OO-ztx"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="gnr-Mz-B5h" firstAttribute="top" secondItem="FVp-4V-iLV" secondAttribute="bottom" id="9Rj-9p-0Hb"/>
+                            <constraint firstItem="FVp-4V-iLV" firstAttribute="top" secondItem="4qk-I5-YsI" secondAttribute="top" id="FKp-NZ-6Ji"/>
+                            <constraint firstAttribute="trailing" secondItem="FVp-4V-iLV" secondAttribute="trailing" id="KQD-nW-aSh"/>
+                            <constraint firstAttribute="bottom" secondItem="gnr-Mz-B5h" secondAttribute="bottom" id="XgP-ey-O5N"/>
+                            <constraint firstAttribute="trailing" secondItem="gnr-Mz-B5h" secondAttribute="trailing" id="h1P-O8-Pk8"/>
+                            <constraint firstItem="Jht-zJ-qHS" firstAttribute="bottom" secondItem="4qk-I5-YsI" secondAttribute="bottom" id="jdR-EU-zUo"/>
+                            <constraint firstItem="gnr-Mz-B5h" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="v5v-88-F3y"/>
+                            <constraint firstItem="FVp-4V-iLV" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leading" id="zZh-B3-fcZ"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="4qk-I5-YsI"/>
                     </view>
+                    <connections>
+                        <outlet property="quickSlotView" destination="Jht-zJ-qHS" id="D8a-cH-Mtx"/>
+                        <outlet property="skView" destination="FVp-4V-iLV" id="3aD-gw-Orn"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>

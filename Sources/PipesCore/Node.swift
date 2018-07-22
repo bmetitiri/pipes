@@ -1,12 +1,10 @@
 class Node {
-  var column: Int
-  var row: Int
+  var position: Point
   weak var value: Building?
   var ore: Item
 
   required init(column: Int, row: Int) {
-    self.column = column
-    self.row = row
+    self.position = Point(x: column, y: row)
     self.ore = .none
   }
 

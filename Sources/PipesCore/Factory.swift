@@ -3,8 +3,8 @@ class Factory: Building {
     return (3, 3)
   }
 
-  init() {
-    super.init(type: .factory)
+  init(position: Point) {
+    super.init(type: .factory, position: position)
   }
 
   var raw = [Item: Int]()

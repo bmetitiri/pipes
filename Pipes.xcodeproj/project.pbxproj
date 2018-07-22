@@ -15,6 +15,9 @@
 		3D861B0E201EC82300C700AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D861B0C201EC82300C700AB /* Main.storyboard */; };
 		3D861B10201EC82300C700AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3D861B0F201EC82300C700AB /* Assets.xcassets */; };
 		3D861B13201EC82300C700AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3D861B11201EC82300C700AB /* LaunchScreen.storyboard */; };
+		3DC0253F2103B31A0093251F /* ItemButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC0253E2103B31A0093251F /* ItemButton.swift */; };
+		3DC025412103CE0A0093251F /* Inventory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC025402103CE0A0093251F /* Inventory.swift */; };
+		3DC025442103E34D0093251F /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DC025432103E34D0093251F /* Utils.swift */; };
 		3DD276BF205FD2A700DFA861 /* Building.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD276B4205FD2A700DFA861 /* Building.swift */; };
 		3DD276C0205FD2A700DFA861 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD276B5205FD2A700DFA861 /* Item.swift */; };
 		3DD276C1205FD2A700DFA861 /* Pipe.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3DD276B6205FD2A700DFA861 /* Pipe.swift */; };
@@ -39,6 +42,9 @@
 		3D861B0F201EC82300C700AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		3D861B12201EC82300C700AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3D861B14201EC82300C700AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3DC0253E2103B31A0093251F /* ItemButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemButton.swift; sourceTree = "<group>"; };
+		3DC025402103CE0A0093251F /* Inventory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Inventory.swift; sourceTree = "<group>"; };
+		3DC025432103E34D0093251F /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		3DD276B4205FD2A700DFA861 /* Building.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Building.swift; sourceTree = "<group>"; };
 		3DD276B5205FD2A700DFA861 /* Item.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
 		3DD276B6205FD2A700DFA861 /* Pipe.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Pipe.swift; sourceTree = "<group>"; };
@@ -82,32 +88,43 @@
 		3D861B01201EC82300C700AB /* Pipes */ = {
 			isa = PBXGroup;
 			children = (
-				3DD603352079F49C00F55621 /* Models */,
+				3D861B14201EC82300C700AB /* Info.plist */,
 				3D861B02201EC82300C700AB /* AppDelegate.swift */,
 				3D861B08201EC82300C700AB /* GameScene.swift */,
+				3DC025432103E34D0093251F /* Utils.swift */,
 				3D861B0A201EC82300C700AB /* GameViewController.swift */,
-				3D861B0C201EC82300C700AB /* Main.storyboard */,
 				3D861B0F201EC82300C700AB /* Assets.xcassets */,
+				3DC0253D2103B2DF0093251F /* Views */,
 				3D861B11201EC82300C700AB /* LaunchScreen.storyboard */,
-				3D861B14201EC82300C700AB /* Info.plist */,
+				3D861B0C201EC82300C700AB /* Main.storyboard */,
+				3DD603352079F49C00F55621 /* Models */,
 			);
 			path = Pipes;
+			sourceTree = "<group>";
+		};
+		3DC0253D2103B2DF0093251F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				3DC0253E2103B31A0093251F /* ItemButton.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		3DD276B3205FD2A700DFA861 /* PipesCore */ = {
 			isa = PBXGroup;
 			children = (
 				3DD276B4205FD2A700DFA861 /* Building.swift */,
+				3DD276BE205FD2A700DFA861 /* Factory.swift */,
+				3DD276BC205FD2A700DFA861 /* Furnace.swift */,
+				3DC025402103CE0A0093251F /* Inventory.swift */,
 				3DD276B5205FD2A700DFA861 /* Item.swift */,
+				3DD276BA205FD2A700DFA861 /* Map.swift */,
+				3DD276B9205FD2A700DFA861 /* Mine.swift */,
+				3DD276BD205FD2A700DFA861 /* Node.swift */,
 				3DD276B6205FD2A700DFA861 /* Pipe.swift */,
 				3DD276B7205FD2A700DFA861 /* Point.swift */,
-				3DD276B8205FD2A700DFA861 /* Yard.swift */,
-				3DD276B9205FD2A700DFA861 /* Mine.swift */,
-				3DD276BA205FD2A700DFA861 /* Map.swift */,
 				3DD276BB205FD2A700DFA861 /* Wall.swift */,
-				3DD276BC205FD2A700DFA861 /* Furnace.swift */,
-				3DD276BD205FD2A700DFA861 /* Node.swift */,
-				3DD276BE205FD2A700DFA861 /* Factory.swift */,
+				3DD276B8205FD2A700DFA861 /* Yard.swift */,
 			);
 			name = PipesCore;
 			path = Sources/PipesCore;
@@ -200,15 +217,18 @@
 				3DD276C6205FD2A700DFA861 /* Wall.swift in Sources */,
 				3DD276C7205FD2A700DFA861 /* Furnace.swift in Sources */,
 				3DD276C8205FD2A700DFA861 /* Node.swift in Sources */,
+				3DC0253F2103B31A0093251F /* ItemButton.swift in Sources */,
 				3DD276C9205FD2A700DFA861 /* Factory.swift in Sources */,
 				3D861B0B201EC82300C700AB /* GameViewController.swift in Sources */,
 				3DD276C4205FD2A700DFA861 /* Mine.swift in Sources */,
 				3DD276C1205FD2A700DFA861 /* Pipe.swift in Sources */,
 				3D5EFD232079FFF800D05C87 /* Item+Extensions.swift in Sources */,
+				3DC025412103CE0A0093251F /* Inventory.swift in Sources */,
 				3DD276C2205FD2A700DFA861 /* Point.swift in Sources */,
 				3DD276C3205FD2A700DFA861 /* Yard.swift in Sources */,
 				3D861B03201EC82300C700AB /* AppDelegate.swift in Sources */,
 				3D5EFD212079FBE500D05C87 /* GameNode.swift in Sources */,
+				3DC025442103E34D0093251F /* Utils.swift in Sources */,
 				3DD276BF205FD2A700DFA861 /* Building.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

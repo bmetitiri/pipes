@@ -1,4 +1,4 @@
-public struct Point {
+public struct Point: Equatable {
   let x: Int
   let y: Int
 

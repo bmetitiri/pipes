@@ -6,8 +6,8 @@ class Furnace: Building {
   var raw = [Item: Int]()
   var time = 0
 
-  init() {
-    super.init(type: .furnace)
+  init(position: Point) {
+    super.init(type: .furnace, position: position)
   }
 
   override func receive(item: Item) -> Bool {

@@ -1,5 +1,5 @@
 class Wall: Building {
-  init() {
-    super.init(type: .wall)
+  init(position: Point) {
+    super.init(type: .wall, position: position)
   }
 }

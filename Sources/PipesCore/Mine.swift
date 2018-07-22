@@ -8,9 +8,9 @@ class Mine: Building {
   var time = 0
   var count = 0
 
-  init(raw: Set<Item>) {
+  init(position: Point, raw: Set<Item>) {
     self.raw = raw
-    super.init(type: .mine)
+    super.init(type: .mine, position: position)
   }
 
   override func update(turn: Int) {

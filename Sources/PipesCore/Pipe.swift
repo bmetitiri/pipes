@@ -1,6 +1,6 @@
 class Pipe: Building {
-  init() {
-    super.init(type: .pipe)
+  init(position: Point) {
+    super.init(type: .pipe, position: position)
   }
 
   func content() -> Item {

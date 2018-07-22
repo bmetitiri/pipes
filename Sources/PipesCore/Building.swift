@@ -8,10 +8,12 @@ public class Building: Hashable {
     return (0, 0)
   }
 
+  let position: Point
   let type: Item
 
-  init(type: Item) {
+  init(type: Item, position: Point) {
     self.type = type
+    self.position = position
   }
 
   lazy public var hashValue: Int = ObjectIdentifier(self).hashValue

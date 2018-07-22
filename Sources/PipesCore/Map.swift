@@ -21,7 +21,7 @@ class Map<T: Node> {
       for row in 0 ..< height {
         let node = T(column: col, row: row)
         if col == 0 || col == width - 1 || row == 0 || row == height - 1 {
-          let value = Wall()
+          let value = Wall(position: Point(x: col, y: row))
           nodes.insert(value)
           node.value = value
         } else {
@@ -41,7 +41,7 @@ class Map<T: Node> {
     }
   }
 
-  func get(at: Point) -> Node {
+  func get(at: Point) -> T {
     return get(x: at.x, y: at.y)
   }
 
@@ -65,24 +65,25 @@ class Map<T: Node> {
     return type == .mine ? ores(type: type, at: at).count > 0 : true
   }
 
-  func build(type: Item, at: Point) {
-    guard let build = type.build() else { return }
+  @discardableResult
+  func build(type: Item, at: Point) -> Building? {
+    guard let build = type.build() else { return nil }
     if !check(type: type, at: at) {
-      return
+      return nil
     }
     inventory[type, default: 0] -= 1
     let receiver: Building
     switch build {
     case is Mine.Type:
-      receiver = Mine(raw: ores(type: type, at: at))
+      receiver = Mine(position: at, raw: ores(type: type, at: at))
 //    case is Yard.Type:
 //      receiver = Yard(map: self)
     case is Factory.Type:
-      receiver = Factory()
+      receiver = Factory(position: at)
     case is Furnace.Type:
-      receiver = Furnace()
+      receiver = Furnace(position: at)
     default:
-      return
+      return nil
     }
     let (w, h) = type.size()
     for row in 0 ..< h {
@@ -91,12 +92,13 @@ class Map<T: Node> {
       }
     }
     active.insert(receiver)
+    return receiver
   }
 
   func pipe(from: Point, to: Point) {
     var dest = get(at: to).value
     if dest == nil {
-      dest = Pipe()
+      dest = Pipe(position: to)
       set(at: to, value: dest!)
     }
     guard let destination = dest else { return }
@@ -107,7 +109,7 @@ class Map<T: Node> {
         source.pipe(to: destination)
       }
     } else {
-      let p = Pipe()
+      let p = Pipe(position: from)
       set(at: from, value: p)
       p.pipe(to: destination)
     }
@@ -163,4 +165,22 @@ class Map<T: Node> {
     }
     map[x][y].value = value
   }
+}
+
+// MARK: - Inventory
+
+extension Map: Inventory {
+
+  func get(item: Item) -> Int {
+    return inventory[item] ?? 0
+  }
+
+  func add(item: Item, count: Int) {
+    inventory[item] = (inventory[item] ?? 0) + count
+  }
+
+  func available() -> [Item] {
+    return Array(inventory.keys)
+  }
+
 }

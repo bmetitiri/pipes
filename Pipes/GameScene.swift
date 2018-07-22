@@ -16,6 +16,8 @@ class GameScene: SKScene {
     }
   }
 
+  var currentBuildType: Item?
+
   let tileSize: CGFloat = 32.0
 
   // MARK: Layers
@@ -24,18 +26,15 @@ class GameScene: SKScene {
 
   // MARK: Gesture stuff
   var startPinchScale: CGFloat = 1.0
+  var draggingType: Building.Type?
+  var draggingNodes: [SKSpriteNode]?
+  var dragAnchorNode: SKSpriteNode?
 
   // MARK: - Initialization functions
 
   override func didMove(to view: SKView) {
     addChild(gameLayer)
     gameLayer.anchorPoint = anchorPoint
-    //
-    //    let layerPosition = CGPoint(
-    //      x: -TileWidth * CGFloat(NumColumns) / 2,
-    //      y: -TileHeight * CGFloat(NumRows) / 2)
-    //
-    //    cookiesLayer.position = layerPosition
     gameLayer.addChild(nodeLayer)
 
     let camera = SKCameraNode()
@@ -46,36 +45,65 @@ class GameScene: SKScene {
 
   private func setupGestures() {
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panRecognized))
-    panGesture.maximumNumberOfTouches = 1
+    panGesture.minimumNumberOfTouches = 2
+//    panGesture.delaysTouchesBegan = true
     view?.addGestureRecognizer(panGesture)
 
     let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchRecognized))
+//    pinchGesture.delaysTouchesBegan = true
     view?.addGestureRecognizer(pinchGesture)
   }
 
   func addSprites(for nodes: [GameNode]) {
     for node in nodes where node.value != nil || node.ore != .none {
       let spriteName = (node.value?.type ?? node.ore).spriteName
-      let sprite = SKSpriteNode(imageNamed: spriteName)
-      sprite.size = CGSize(width: tileSize, height: tileSize)
-      sprite.position = spritePositionFor(column: node.column, row: node.row)
+      let sprite = createNodeSprite(named: spriteName, at: node.position)
       nodeLayer.addChild(sprite)
       node.sprite = sprite
     }
   }
 
+  func addSprites(for building: Building) {
+    let size = type(of: building).size()
+    for row in 0..<size.height {
+      for col in 0..<size.width {
+        let nodePoint = Point(x: building.position.x + col, y: building.position.y + row)
+        let node = map.get(at: nodePoint)
+        if let oldSprite = node.sprite {
+          oldSprite.removeFromParent()
+        }
+        let sprite = createNodeSprite(named: building.type.spriteName, at: nodePoint)
+        nodeLayer.addChild(sprite)
+        node.sprite = sprite
+      }
+    }
+  }
+
   // MARK: - Helper functions
   
-  private func spritePositionFor(column: Int, row: Int) -> CGPoint {
+  private func spritePositionFor(point: Point) -> CGPoint {
     return CGPoint(
-      x: CGFloat(column) * tileSize + tileSize / 2,
-      y: CGFloat(row) * tileSize + tileSize / 2)
+      x: CGFloat(point.x) * tileSize + tileSize / 2,
+      y: CGFloat(point.y) * tileSize + tileSize / 2)
+  }
+
+  private func mapPosition(for point: CGPoint) -> Point {
+    let x = (point.x - tileSize / 2) / tileSize
+    let y = (point.y - tileSize / 2) / tileSize
+    return Point(x: Int(x), y: Int(y))
+  }
+
+  private func createNodeSprite(named spriteName: String, at point: Point) -> SKSpriteNode {
+    let sprite = SKSpriteNode(imageNamed: spriteName)
+    sprite.size = CGSize(width: tileSize, height: tileSize)
+    sprite.position = spritePositionFor(point: point)
+    return sprite
   }
 
   func updateMap() {
     addSprites(for: map.map.flatMap { return $0 })
     updateCameraConstraints()
-    guard let texture = gridTexture(rows: map.height, cols: map.width, tileSize: tileSize)
+    guard let texture = Utils.gridTexture(rows: map.height, cols: map.width, tileSize: tileSize)
       else { return }
     gameLayer.size = CGSize(width: texture.size().width, height: texture.size().height)
     gameLayer.texture = texture
@@ -94,43 +122,76 @@ class GameScene: SKScene {
     camera.constraints = [cameraEdgeConstraint]
   }
 
-  private func gridTexture(rows: Int, cols: Int, tileSize: CGFloat) -> SKTexture? {
-    // Add 1 to the height and width to ensure the borders are within the sprite
-    let size = CGSize(width: CGFloat(cols) * tileSize + 1, height: CGFloat(rows) * tileSize + 1)
-    UIGraphicsBeginImageContext(size)
-
-    guard let context = UIGraphicsGetCurrentContext() else {
-      return nil
-    }
-    let bezierPath = UIBezierPath()
-    let offset: CGFloat = 0.5
-    // Draw vertical lines
-    for i in 0...cols {
-      let x = CGFloat(i) * tileSize + offset
-      bezierPath.move(to: CGPoint(x: x, y: 0))
-      bezierPath.addLine(to: CGPoint(x: x, y: size.height))
-    }
-    // Draw horizontal lines
-    for i in 0...rows {
-      let y = CGFloat(i) * tileSize + offset
-      bezierPath.move(to: CGPoint(x: 0, y: y))
-      bezierPath.addLine(to: CGPoint(x: size.width, y: y))
-    }
-    SKColor.white.setStroke()
-    bezierPath.lineWidth = 1.0
-    bezierPath.stroke()
-    context.addPath(bezierPath.cgPath)
-    let image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
-
-    return SKTexture(image: image!)
-  }
-
 }
 
 // MARK: - Gesture Recognizers
 
 extension GameScene {
+
+  override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first, touches.count == 1,
+      let buildType = currentBuildType, let build = buildType.build() else { return }
+    draggingType = build
+    draggingNodes = []
+    let anchorPoint = mapPosition(for: touch.location(in: nodeLayer))
+    for row in 0..<build.size().height {
+      for col in 0..<build.size().width {
+        let nodePoint = Point(x: anchorPoint.x + col, y: anchorPoint.y + row)
+        let sprite = createNodeSprite(named: buildType.spriteName, at: nodePoint)
+        sprite.alpha = 0.7
+        draggingNodes?.append(sprite)
+        nodeLayer.addChild(sprite)
+        if nodePoint == anchorPoint {
+          dragAnchorNode = sprite
+        }
+      }
+    }
+  }
+
+  override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let touch = touches.first, touches.count == 1,
+      let anchorNode = dragAnchorNode, let nodes = draggingNodes else {
+      endDrag()
+      return
+    }
+    let newAnchorPoint = mapPosition(for: touch.location(in: nodeLayer))
+    let anchorPoint = mapPosition(for: anchorNode.position)
+    guard newAnchorPoint != anchorPoint else { return }
+    let xDiff = newAnchorPoint.x - anchorPoint.x
+    let yDiff = newAnchorPoint.y - anchorPoint.y
+    nodes.forEach { node in
+      let nodeAnchor = mapPosition(for: node.position)
+      node.position = spritePositionFor(point: Point(x: nodeAnchor.x + xDiff,
+                                                     y: nodeAnchor.y + yDiff))
+    }
+  }
+
+  override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+    guard let buildType = currentBuildType, let anchorNode = dragAnchorNode else {
+      endDrag()
+      return
+    }
+    let buildPoint = mapPosition(for: anchorNode.position)
+    if let building = map.build(type: buildType, at: buildPoint) {
+      addSprites(for: building)
+    }
+    endDrag()
+  }
+
+  override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+    endDrag()
+  }
+
+  private func endDrag() {
+    if let nodes = draggingNodes {
+      for node in nodes {
+        node.removeFromParent()
+      }
+    }
+    draggingType = nil
+    draggingNodes = nil
+    dragAnchorNode = nil
+  }
 
   @objc func panRecognized(_ sender: UIPanGestureRecognizer) {
     let translation = sender.translation(in: view!)

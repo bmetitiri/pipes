@@ -21,8 +21,9 @@ class GameScene: SKScene {
   let tileSize: CGFloat = 32.0
 
   // MARK: Layers
-  let gameLayer = SKSpriteNode()
+  let gameLayer = SKNode()
   let nodeLayer = SKNode()
+  let backgroundNode = SKSpriteNode()
 
   // MARK: Gesture stuff
   var startPinchScale: CGFloat = 1.0
@@ -34,7 +35,8 @@ class GameScene: SKScene {
 
   override func didMove(to view: SKView) {
     addChild(gameLayer)
-    gameLayer.anchorPoint = anchorPoint
+    backgroundNode.anchorPoint = anchorPoint
+    gameLayer.addChild(backgroundNode)
     gameLayer.addChild(nodeLayer)
 
     let camera = SKCameraNode()
@@ -43,18 +45,27 @@ class GameScene: SKScene {
     setupGestures()
   }
 
+  private func updateMap() {
+    addSprites(for: map.map.flatMap { return $0 })
+    updateCameraConstraints()
+    guard let texture = Utils.gridTexture(rows: map.height, cols: map.width, tileSize: tileSize)
+      else { return }
+    backgroundNode.size = CGSize(width: texture.size().width, height: texture.size().height)
+    backgroundNode.texture = texture
+  }
+
   private func setupGestures() {
     let panGesture = UIPanGestureRecognizer(target: self, action: #selector(panRecognized))
     panGesture.minimumNumberOfTouches = 2
-//    panGesture.delaysTouchesBegan = true
     view?.addGestureRecognizer(panGesture)
 
     let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(pinchRecognized))
-//    pinchGesture.delaysTouchesBegan = true
     view?.addGestureRecognizer(pinchGesture)
   }
 
-  func addSprites(for nodes: [GameNode]) {
+  // MARK: - Helper functions
+
+  private func addSprites(for nodes: [GameNode]) {
     for node in nodes where node.value != nil || node.ore != .none {
       let spriteName = (node.value?.type ?? node.ore).spriteName
       let sprite = createNodeSprite(named: spriteName, at: node.position)
@@ -63,7 +74,7 @@ class GameScene: SKScene {
     }
   }
 
-  func addSprites(for building: Building) {
+  private func addSprites(for building: Building) {
     let size = type(of: building).size()
     for row in 0..<size.height {
       for col in 0..<size.width {
@@ -78,8 +89,6 @@ class GameScene: SKScene {
       }
     }
   }
-
-  // MARK: - Helper functions
   
   private func spritePositionFor(point: Point) -> CGPoint {
     return CGPoint(
@@ -98,15 +107,6 @@ class GameScene: SKScene {
     sprite.size = CGSize(width: tileSize, height: tileSize)
     sprite.position = spritePositionFor(point: point)
     return sprite
-  }
-
-  func updateMap() {
-    addSprites(for: map.map.flatMap { return $0 })
-    updateCameraConstraints()
-    guard let texture = Utils.gridTexture(rows: map.height, cols: map.width, tileSize: tileSize)
-      else { return }
-    gameLayer.size = CGSize(width: texture.size().width, height: texture.size().height)
-    gameLayer.texture = texture
   }
 
   private func updateCameraConstraints() {

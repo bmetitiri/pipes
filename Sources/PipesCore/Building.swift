@@ -16,7 +16,9 @@ public class Building: Hashable {
     self.position = position
   }
 
-  lazy public var hashValue: Int = ObjectIdentifier(self).hashValue
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(ObjectIdentifier(self))
+  }
 
   func pipe(to: Building) {
     destination = to

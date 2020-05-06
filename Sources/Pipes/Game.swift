@@ -9,9 +9,9 @@ class Game {
     let height = 20
     let width = 40
     map = Map(width: width, height: height)
-    map.inventory[.mine] = 2
+    map.inventory[.mine] = 3
     map.inventory[.furnace] = 2
-    map.inventory[.factory] = 1
+    map.inventory[.factory] = 3
     map.inventory[.yard] = 1
 
     controls = Controls(map: map)

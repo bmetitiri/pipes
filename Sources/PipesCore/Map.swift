@@ -1,6 +1,10 @@
 import Foundation
 
-public class Map {
+protocol Inventory: class {
+  func add(item: Item)
+}
+
+public class Map: Inventory {
   public let width: Int
   public let height: Int
   // TODO: Probably should not be public.
@@ -35,6 +39,10 @@ public class Map {
         }
       }
     }
+  }
+
+  public func add(item: Item) {
+    inventory[item, default: 0] += 1
   }
 
   public func get(at: Point) -> Node {

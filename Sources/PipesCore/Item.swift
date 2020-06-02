@@ -13,9 +13,34 @@ public enum Item {
     factory, furnace, mine, yard,
   ]
 
+  public static func < (lhs: Item, rhs: Item) -> Bool{
+    return String(describing: lhs) < String(describing: rhs)
+  }
+
   public func size() -> (width: Int, height: Int) {
     guard let b = build() else { return (0, 0) }
     return b.size()
+  }
+
+  public func recipe() -> Dictionary<Item, Int>? {
+    switch self {
+    case .circuit:
+      return [.copper: 3]
+    case .gear:
+      return [.iron: 2]
+    case .pipe:
+      return [.iron: 2]
+    case .factory:
+      return [.circuit: 2, .gear: 2, .pipe: 2]
+    case .furnace:
+      return [.gear: 2, .stone: 2]
+    case .mine:
+      return [.gear: 2, .pipe: 2]
+    case .yard:
+      return [.factory: 4, .gear: 4]
+    default:
+      return nil
+    }
   }
 
   func build() -> Building.Type? {
@@ -28,27 +53,6 @@ public enum Item {
       return Furnace.self
     case .yard:
       return Yard.self
-    default:
-      return nil
-    }
-  }
-
-  func recipe() -> Dictionary<Item, Int>? {
-    switch self {
-    case .circuit:
-      return [.copper: 3]
-    case .gear:
-      return [.iron: 2]
-    case .pipe:
-      return [.iron: 4]
-    case .factory:
-      return [.circuit: 2, .gear: 2, .pipe: 2]
-    case .furnace:
-      return [.gear: 2, .stone: 2]
-    case .mine:
-      return [.gear: 2, .pipe: 2]
-    case .yard:
-      return [.factory: 4, .gear: 4]
     default:
       return nil
     }

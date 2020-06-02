@@ -42,6 +42,7 @@ class Controls {
       }
       addstr(" ")
     }
+    addstr("\n")
   }
 
   func draw() {
@@ -55,18 +56,23 @@ class Controls {
       case .factory:
         addstr("(↹)Selected: ")
         menu(options: node.options(), selected: node.subtype())
+        if let recipe = node.subtype().recipe(), recipe.count > 0 {
+          addstr("Recipe: ")
+          for k in (recipe.sorted {$0.0 < $1.0}) {
+            addstr("\(k.value) \(String(describing:k.key)) ")
+          }
+          addstr("\n")
+        }
       default:
-        addstr("Selected: \(String(describing: map.get(at: Point(x: x, y: y))))")
+        addstr("Selected: \(String(describing: map.get(at: Point(x: x, y: y))))\n")
       }
       let inventory = node.inventory()
       if inventory.count > 0 {
-        move(Int32(map.height) + 3, 0)
-        addstr("Contents: \(inventory)")
+        addstr("Contents: \(inventory)\n")
       }
       let raw = node.raw()
       if raw.count > 0 {
-        move(Int32(map.height) + 4, 0)
-        addstr("Internal: \(raw)")
+        addstr("Internal: \(raw)\n")
       }
     case .build:
       addstr("(↹)Selected: ")

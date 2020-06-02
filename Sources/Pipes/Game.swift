@@ -7,11 +7,11 @@ class Game {
 
   init() {
     let height = 20
-    let width = 40
+    let width = 50
     map = Map(width: width, height: height)
     map.inventory[.mine] = 3
     map.inventory[.furnace] = 2
-    map.inventory[.factory] = 3
+    map.inventory[.factory] = 4
     map.inventory[.yard] = 1
 
     controls = Controls(map: map)
